@@ -1,0 +1,20 @@
+{
+  "name": "es6-web-component-tutorial",
+  "version": "1.0.0",
+  "main": "webcomponents.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "ilario.david",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/statelessbr/es6-web-component-tutorial.git"
+  },
+  "bugs": {
+    "url": "https://github.com/statelessbr/es6-web-component-tutorial/issues"
+  },
+  "homepage": "https://github.com/statelessbr/es6-web-component-tutorial#readme",
+  "description": ""
+}
