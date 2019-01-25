@@ -1,4 +1,7 @@
 (function () {
+
+    console.log('started...');
+
     let template = `
     <style>
   @import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700);
@@ -88,9 +91,25 @@
 
     class DateWidget extends HTMLElement {
 
+        constructor() {
+
+            super();
+            this.createdCallback();
+        }
+
+        static get observedAttributes() {
+            return [
+                'theme'
+            ];
+        }
+
         // Fires when an instance of the element is created.
         createdCallback() {
-            this.createShadowRoot().innerHTML = template;
+
+            //[Deprecated]
+            //this.createShadowRoot().innerHTML = template;
+
+            this.attachShadow({ mode: 'open' }).innerHTML = template;
 
             //Grab the elements from the shadow root
             this.$container = this.shadowRoot.querySelector('.container');
@@ -110,11 +129,26 @@
             }, 1000);
         };
 
+        // Fires when the element is inserted into the DOM.
+        connectedCallback() {
+            if (!this.hasAttribute('theme')) {
+                this.setAttribute('theme', 'green');
+            }
+
+            //this._upgradeProperty('theme');
+        }
+
+        // Fires when the element is removed from the DOM.
+        disconnectedCallback() { }
+
         // Fires when an instance was inserted into the document.
         attachedCallback() { };
 
         // Fires when an attribute was added, removed, or updated.
         attributeChangedCallback(attrName, oldVal, newVal) {
+
+            console.log(attrName, oldVal, '==>', newVal);
+
             switch (attrName) {
                 case "theme":
                     this.updateTheme(newVal);
@@ -131,6 +165,9 @@
         };
 
         updateTheme(theme) {
+
+            console.log('updateTheme', theme);
+
             var val = "green";
             if (["green", "red", "blue", "gold"].indexOf(theme) > -1) {
                 val = theme;
@@ -138,7 +175,28 @@
 
             this.$container.className = "container " + val;
         };
+
+        _upgradeProperty(prop) {
+            console.log('_upgradeProperty', prop);
+
+            if (this.hasOwnProperty(prop)) {
+                let value = this[prop];
+                delete this[prop];
+                this[prop] = value;
+            }
+        }
+
+        set theme(value) {
+            this.updateTheme(value);
+        }
+
+        get theme() {
+            return this.getAttribute('theme');
+        }
     }
 
-    document.registerElement('date-widget', DateWidget);
+    //[Deprecated]
+    //document.registerElement('date-widget', DateWidget);
+
+    customElements.define('date-widget', DateWidget);
 })();
